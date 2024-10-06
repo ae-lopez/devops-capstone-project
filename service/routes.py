@@ -61,7 +61,28 @@ def create_accounts():
 # LIST ALL ACCOUNTS
 ######################################################################
 
-# ... place you code here to LIST accounts ...
+@app.route("/accounts", methods=["GET"])
+def list_accounts():
+    """
+    Description: uses Account.all() method to return all accounts as a list of dict 
+    Parameters: none
+    Returns: list of accounts, and return code HTTP_200_OK. empty list if no accounts exist
+    """
+    app.logger.info("Request to list Accounts")
+    accounts = Account.all()
+    # make a list of the account dicts 
+    account_list = [acc.serialize() for acc in accounts]
+    # return the # of accounts to the log 
+    app.logger.info("Returning [%s] accounts", len(account_list))
+
+    # return the list with a return code of status.HTTP_200_OK
+    return jsonify(account_list), status.HTTP_200_OK
+
+
+
+
+
+
 
 
 ######################################################################
@@ -81,8 +102,6 @@ def read_account(account_id):
         abort(status.HTTP_404_NOT_FOUND, f"Account with id {id} not found")
     
     return account.serialize(), status.HTTP_200_OK
-    
-
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
@@ -102,9 +121,6 @@ def update_account(account_id):
     account.deserialize(request.get_json())
     account.update()  # update acc with new data
     return account.serialize(), status.HTTP_200_OK
-
-
-
 
 ######################################################################
 # DELETE AN ACCOUNT

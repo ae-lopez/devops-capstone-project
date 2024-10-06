@@ -151,7 +151,19 @@ class TestAccountService(TestCase):
         resp = self.client.put(f"{BASE_URL}/{new_acc['id']}", json=new_acc)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_account = resp.get_json()
-        self.assertEqual(updated_account["name"], "myNewestAccount")
+        self.assertEqual(updated_account["name"], "myNewestAccount") 
+    
+    def test_list_all_accounts(self):
+        """test listing out all accounts"""
+        acc = self._create_accounts(10)
+        resp = self.client.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        # assert length of data is smae as number of accounts created
+        self.assertEqual(len(data), 10) 
+        
+
+
 
 
 
