@@ -78,13 +78,6 @@ def list_accounts():
     # return the list with a return code of status.HTTP_200_OK
     return jsonify(account_list), status.HTTP_200_OK
 
-
-
-
-
-
-
-
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
@@ -126,7 +119,24 @@ def update_account(account_id):
 # DELETE AN ACCOUNT
 ######################################################################
 
-# ... place you code here to DELETE an account ...
+@app.route("/accounts/<int:account_id>", methods=["DELETE"])
+def delete_account(account_id):
+    """
+    Description: accepts an account_id and deletes the account
+    Parameters: id (int)
+    Returns: empty str w/ return code HTTP_404_NOT_FOUND
+    """
+    app.logger.info("Request to delete an Account with id: %s", account_id)
+    account = Account.find(account_id)
+    # if account is not found, do nothing
+    # if account is found, call delete() method 
+    if account:
+        account.delete()
+
+    # return empty str and 204 status code
+    return "", status.HTTP_204_NO_CONTENT
+
+
 
 
 ######################################################################

@@ -161,6 +161,13 @@ class TestAccountService(TestCase):
         data = resp.get_json()
         # assert length of data is smae as number of accounts created
         self.assertEqual(len(data), 10) 
+
+    def test_delete_account(self):
+        """test deleting an account"""
+        acc = self._create_accounts(1)[0] # create account of length 1, pick 0th element 
+        resp = self.client.delete(f"{BASE_URL}/{acc.id}")
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+
         
 
 
