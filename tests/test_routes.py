@@ -138,5 +138,21 @@ class TestAccountService(TestCase):
         """test response code from reading a non-existing account"""
         response = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+    def test_update_account(self):
+        """ test single account updates"""
+        test_account = AccountFactory()
+        resp = self.client.post(BASE_URL, json=test_account.serialize())
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update account 
+        new_acc = resp.get_json()
+        new_acc["name"] = "myNewestAccount"
+        resp = self.client.put(f"{BASE_URL}/{new_acc['id']}", json=new_acc)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_account = resp.get_json()
+        self.assertEqual(updated_account["name"], "myNewestAccount")
+
+
 
 
