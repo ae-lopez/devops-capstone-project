@@ -61,18 +61,18 @@ def create_accounts():
 # LIST ALL ACCOUNTS
 ######################################################################
 
+
 @app.route("/accounts", methods=["GET"])
 def list_accounts():
-    """
-    Description: uses Account.all() method to return all accounts as a list of dict 
+    """Description: uses Account.all() method to return all accounts as a list of dict
     Parameters: none
     Returns: list of accounts, and return code HTTP_200_OK. empty list if no accounts exist
     """
     app.logger.info("Request to list Accounts")
     accounts = Account.all()
-    # make a list of the account dicts 
+    # make a list of the account dicts
     account_list = [acc.serialize() for acc in accounts]
-    # return the # of accounts to the log 
+    # return the # of accounts to the log
     app.logger.info("Returning [%s] accounts", len(account_list))
 
     # return the list with a return code of status.HTTP_200_OK
@@ -82,23 +82,24 @@ def list_accounts():
 # READ AN ACCOUNT
 ######################################################################
 
+
 @app.route("/accounts/<int:account_id>", methods=["GET"])
 def read_account(account_id):
-    """
-    Description: accepts an account_id and uses Account.find() to find the account
-    Parameters: id (int) 
+    """Description: accepts an account_id and uses Account.find() to find the account
+    Parameters: id (int)
     Returns: python dict w/ return code HTTP_200_OK if found, HTTP_404_NOT_FOUND else
     """
     app.logger.info("Request to read an Account with id: %s", account_id)
     account = Account.find(account_id)
     if not account:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id {id} not found")
-    
+
     return account.serialize(), status.HTTP_200_OK
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
+
 
 @app.route("/accounts/<int:account_id>", methods=["PUT"])
 def update_account(account_id):
@@ -119,6 +120,7 @@ def update_account(account_id):
 # DELETE AN ACCOUNT
 ######################################################################
 
+
 @app.route("/accounts/<int:account_id>", methods=["DELETE"])
 def delete_account(account_id):
     """
@@ -129,7 +131,7 @@ def delete_account(account_id):
     app.logger.info("Request to delete an Account with id: %s", account_id)
     account = Account.find(account_id)
     # if account is not found, do nothing
-    # if account is found, call delete() method 
+    # if account is found, call delete() method
     if account:
         account.delete()
 
