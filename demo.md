@@ -1,3 +1,18 @@
+# Create a docker image:
+Use the docker build command to build a Docker image called accounts from the Dockerfile.
+
+`docker build -t accounts .`
+
+Use the docker run command to test that your image works properly. The PostgreSQL database is running in a Docker container named postgres so you will need to --link postgres and set the environment variable DATABASE_URI to point to it. You might also want to use the --rm flag to remove the container when it exists
+
+```
+docker run --rm \
+    --link postgresql \
+    -p 8080:8080 \
+    -e DATABASE_URI=postgresql://postgres:postgres@postgresql:5432/postgres \
+    accounts
+```
+
 # Run the rest service
 1. Refresh database: `flask db-create`
 2. start service w new database: `make run` 
